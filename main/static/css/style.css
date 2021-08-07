@@ -1,0 +1,95 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body,
+html {
+    height: 100%;
+    margin: 0px;
+    background-image: url('/static/img/lake.jpeg');
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.home {
+    font-size: 60px;
+}
+
+h2,
+.home,
+.form-select,
+#map_location {
+    text-align: center;
+    color: rgb(49, 46, 53);
+    font-family: "Trirong", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(135, 66, 0);
+}
+
+form,
+label,
+h1,
+button,
+tr,
+th,
+td,
+a {
+    color: rgb(234, 254, 217);
+}
+
+table,
+tr,
+td,
+th {
+    border: rgb(234, 254, 217);
+    border-style: solid;
+}
+
+.log,
+button {
+    background-color: rgb(163, 151, 102);
+    border-radius: 2px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border: none;
+    margin-top: 5px;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.thumbnail {
+    border: 2px solid rgb(49, 46, 53);
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+    height:125px;
+    margin: 5px;
+}
+
+.thumbnail,
+img:hover {
+    box-shadow: 0 0 2px 1px rgb(135, 66, 0);
+}
+
+.img_col {
+    font-size: 1 rem;
+    display: inline-block;
+    width: 25%;
+}
+
+.col_row {
+    float: left;
+    width: 25%;
+}
