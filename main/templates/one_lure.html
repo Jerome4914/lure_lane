@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Lure!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: right">
+        <button class="dash"><a href="/lure/best_lure_form">Find a Lure!</a></button>
+        <button class="dash"><a href="/user/logout_user">Logout</a> </button>
+        <button class="dash"><a href="/user/dashboard">Home</a></button>
+        </div>
+        <h1>Edit Review!</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="/lure/{{review.id}}/edit" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Lure Name:</label>
+                        <input type="text" name="comment" class="form-control" value="{{review.lure_reviewed.name}}" disabled="disabled">
+                    </div>
+                    {% if messages %}
+                    {% for message in messages %}
+                    {% if 'comment' in message.tags %}
+                    <p style="color:red;">{{message}}</p>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="comment">Review:</label>
+                        <textarea name="comment" cols="10" rows="4" class="form-control">{{review.comment}}</textarea>
+                    </div>
+                    {% if messages %}
+                    {% for message in messages %}
+                    {% if 'rating' in message.tags %}
+                    <p style="color:red;">{{message}}</p>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="rating">Rating:</label>
+                        <select name="rating" class="form-select">
+                            <option class="select_color" selected>Rate this lure!</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    <div>
+                            <button class="dash">Edit</button>
+                            <button class="dash"><a href="/user/dashboard">Cancel</a></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

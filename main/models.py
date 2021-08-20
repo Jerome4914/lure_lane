@@ -31,8 +31,10 @@ class UserManager(models.Manager):
             errors['login_password'] = "Email or Password do not match"
         if len(postData['email']) == 0:
             errors['login_email'] = "Email must be entered"
-        if len(postData['password']) < 8:
-            errors['login_password'] = "Password should be at least 8 characters"
+        # if len(postData['password']) < 8:
+        #     errors['login_password'] = "Password should be at least 8 characters"
+        if len(postData['password']) == 0:
+            errors['login_password'] = "Password must be entered"
         return errors
 
 class FishManager(models.Manager):
@@ -40,22 +42,28 @@ class FishManager(models.Manager):
         errors = {}
         if len(postData['location']) == 0:
             errors['location'] = "Location must be entered"
-        if (postData['all_fish']) == "Choose a fish!":
-            errors['all_fish'] = "Breed must be entered"
         return errors
 
-# class LureManager(models.Manager):
-#     def lure_validator(self, postData):
-#         errors = {}
-#         if len(postData['name']) < 2:
-#             errors['name'] = "Lure name must be more than 2 characters"
-#         return errors
+    def lure_fish_validator(self, postData):
+        errors = {}
+        if len(postData['fish_breed']) == 0:
+            errors['fish_breed'] = "Type of fish must be entered"
+        return errors
+
+class LureManager(models.Manager):
+    def lure_validator(self, postData):
+        errors = {}
+        if len(postData['name']) < 2:
+            errors['name'] = "Lure name must be more than 2 characters"
+        return errors
 
 class ReviewManager(models.Manager):
     def review_validator(self, postData):
         errors = {}
         if len(postData['comment']) < 3:
             errors["comment"] = "Comment should be at least 3 characters"
+        if (postData['rating']) == "Rate this lure!":
+            errors['rating'] = "Please select a rating"
         return errors
 
 class User(models.Model):
@@ -69,49 +77,29 @@ class User(models.Model):
     #"user_reviews"
 
 class Fish(models.Model):
-    
-    CRAPPIE = 'CR'
-    BASS = 'BS'
-    TROUT = 'TR'
-    WALLEYE = 'WL'
-    STRIPER = 'ST'
-    MUSKIE = 'MU'
-    PIKE = 'PI'
-    SALMON = 'SA'
-    ALL_FISH_CHOICES = [
-        (CRAPPIE, 'crappie'),
-        (BASS, 'bass'),
-        (TROUT, 'trout'),
-        (WALLEYE, 'walleye'),
-        (STRIPER, 'striper'),
-        (MUSKIE, 'muskie'),
-        (PIKE, 'pike'),
-        (SALMON, 'salmon')
-
-    ]
-    
-    location = models.CharField(max_length=50)
-    # fish_breed = models.CharField(max_length=50)
-    all_fish = models.CharField(max_length=2, choices=ALL_FISH_CHOICES)
+    location = models.CharField(max_length=50, null=True)
+    fish_breed = models.CharField(max_length=50, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = FishManager()
-    #"lures"
-#     
+    #"this_lure"
+
 
 class Lure(models.Model):
     name = models.CharField(max_length=50)
-    all_fish = models.ManyToManyField(Fish, related_name="lures")
+    this_fish = models.ManyToManyField(Fish, related_name="this_lure")
+    description = models.CharField(max_length=250, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # objects = LureManager()
+    objects = LureManager()
     #"lure_reviews"
 
 class Review(models.Model):
-    comment = models.CharField(max_length=50)
+    comment = models.TextField(null=True)
     rating = models.IntegerField()
     user_review = models.ForeignKey(User, related_name="user_reviews", on_delete=models.CASCADE)
-    lure_reviewed = models.ForeignKey(Lure, related_name="lure_reviews", on_delete=models.CASCADE)
+    lure_reviewed = models.ForeignKey(Lure, related_name="lure_reviews", on_delete=models.CASCADE, null=True)
+    fish_reviewed = models.ForeignKey(Fish, related_name="fish_reviews", on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ReviewManager()

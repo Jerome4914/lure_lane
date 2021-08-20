@@ -10,9 +10,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
-    <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeZbRpW3HC9vwTjkpVXQf5SUWPOW63Vwg&callback=initMap">
-    </script>
+    
     <script src="{% static 'js/script.js' %}"></script>
     <title>Lure List</title>
 </head>
@@ -20,107 +18,35 @@
 <body>
     <div class="container">
         <div style="text-align: right">
-            <button class="dash"><a href="/lure/lure_form">Find your Lure! </a></button>
+            <button class="dash"><a href="/lure/lure_form">Add/Review a Lure!</a></button>
+            <button class="dash"><a href="/lure/best_lure_form">Find a Lure! </a></button>
             <button class="dash"><a href="/user/logout_user">Logout</a> </button>
             <button class="dash"><a href="/user/dashboard">Home</a></button>
-        </div>
-        <div style="margin-top:20px">
-        <h1 id="map_location">{{fish.location}}</h1>
-        </div>
+        </div style="text-align: center">
+        <h4 id="map_location">{{location}}</h4>
         <div id="map"></div>
-        
-
-            {% if CR is not None %}
-            <h2>Top rated {{fish.all_fish}} Lures!</h2>
-            <div class="col_row">
-            <div class="img_col">
-                <a href=""><img class="thumbnail" src="{% static 'img/Crappie Jig1.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/crappie jig2.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/crappie jig3.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/crappie jig4.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/crappie jig5.jpg' %}" /></a>
-            </div>
-            {% endif %}
-
-            {% if BS is None %}
-            <h2>Top rated {{fish.all_fish}} Lures!</h2>
-            <div class="img_col">
-                <a href=""><img class="thumbnail" src="{% static 'img/bass lure1.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/bass lure2.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/bass lure3.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/bass lure4.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/bass lure5.jpg' %}" /></a>
-            </div>
-            {% endif %}
-
-
-            {% if TR is not None %}
-            <h2>Top rated {{fish.all_fish}} Lures!</h2>
-            <div class="img_col">
-                <a href=""><img class="thumbnail" src="{% static 'img/trout lure1.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/trout lure2.jpg' %}" /></a></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/trout lure3.jpg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/trout lure4.jpeg' %}" /></a>
-                <a href=""><img class="thumbnail" src="{% static 'img/trout lure5.jpeg' %}" /></a></a>
-            </div>
-            {% endif %}
-
-            {% if WL is not None %}
-            <h2>Top rated {{fish.all_fish}} Lures!</h2>
-            <div class="img_col">
-            <a href=""><img class="thumbnail" src="{% static 'img/walley lure1.jpg' %}" /></a></a>
-            <a href=""></a><img class="thumbnail" src="{% static 'img/walley lure2.jpg' %}" /></a></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/walley lure3.jpg' %}" /></a>
-            <a href=""></a><img class="thumbnail" src="{% static 'img/walley lure4.jpg' %}" /></a></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/walley lure5.jpeg' %}" /></a>
-        </div>
-        {% endif %}
-
-        {% if ST is not None %}
-        <h2>Top rated {{fish.all_fish}} Lures!</h2>
-        <div class="img_col">
-            <a href=""><img class="thumbnail" src="{% static 'img/striper lure1.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/striper lure2.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/striper lure3.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/striper lure1.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/striper lure5.jpeg' %}" /></a>
-        </div>
-        {% endif %}
-
-        {% if MU is not None %}
-        <h2>Top rated {{fish.all_fish}} Lures!</h2>
-        <div class="img_col">
-            <a href=""><img class="thumbnail" src="{% static 'img/muskie lure1.jpeg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/muskie lure2.jpeg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/muskie lure3.jpeg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/muskie lure4.jpeg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/muskie lure5.jpeg' %}" /></a>
-        </div>
-        {% endif %}
-
-        {% if PI is not None %}
-        <h2>Top rated {{fish.all_fish}} Lures!</h2>
-        <div class="img_col">
-            <a href=""><img class="thumbnail" src="{% static 'img/pike lure1.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/pike lure2.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/pike lure3.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/pike lure4.jpg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/pike lure5.jpg' %}" /></a>
-        </div>
-        {% endif %}
-
-        {% if SA is not None %}
-        <h2>Top rated {{fish.all_fish}} Lures!</h2>
-        <div class="img_col">
-            <a href=""><img class="thumbnail" src="{% static 'img/salmon lure1.jpeg' %}" /></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/salmon lure2.jpeg' %}" /></a>
-            <a href=""></a><img class="thumbnail" src="{% static 'img/salmon lure3.jpeg' %}" /></a></a>
-            <a href=""><img class="thumbnail" src="{% static 'img/salmon lure4.jpeg' %}" /></a>
-            <a href=""></a><img class="thumbnail" src="{% static 'img/salmon lure5.jpeg' %}" /></a></a>
-        </div>
-        {% endif %}
-    </div>
+            
+            
+            <h2>Top rated {{fish.fish_breed}} Lures!</h2>
+            
+            {% for lure in all_lures %}
+            
+            <table id="lure_table">
+                <tr style="height:100px">
+                
+                <td><img class="thumbnail" src="/static/img/{{fish.fish_breed}} {{lure.name}}.jpg"/></td>
+                
+                <td>{{lure.description}}</td>
+                </tr>
+            </table>
+            
+            {% endfor %}
+            
+            
     </div>
 </body>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key='AIzaSyBeZbRpW3HC9vwTjkpVXQf5SUWPOW63Vwg'&callback=initMap">
+    </script>
 
 </html>

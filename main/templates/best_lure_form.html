@@ -19,11 +19,12 @@
             <button class="dash"><a href="/user/dashboard">Home</a></button>
             <button class="dash"><a href="/user/logout_user">Logout</a></button>
         </div>
-        <h2>Hey {{current_users.first_name}}</h2>
-        <h2>Lets find you some lures!</h2>
-        <div style="margin-top: 150px" class="row justify-content-center">
+        <h1> Hey {{current_users.first_name}}</h1>
+
+        <h1>Lets find you some lures!</h1>
+        <div style="margin-top: 65px" class="row justify-content-center">
             <div class="col-md-4">
-                <form action="/lure/create_location" method="POST">
+                <form action="/lure/best_lures" method="POST">
                     {% csrf_token %}
                     {% if messages %}
                     {% for message in messages %}
@@ -34,33 +35,31 @@
                     {% endif %}
 
                     <div class="form-group">
-                        <label style="font-size: x-large" for="location">Your location</label>
+                        <label for="location">Choose your location</label>
                         <input type="text" class="form-control" name="location">
                     </div>
 
-                    {% if messages %}
-                    {% for message in messages %}
-                    {% if 'all_fish' in message.tags %}
-                    <p style="color:red;">{{message}}</p>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
-
                     <div class="form-group">
-                        <label style="font-size: x-large" for="all_fish">Type of Fish</label>
+                        <label>Please select a fish!</label>
 
-                        <select class="form-select" name="all_fish">
-                            <option selected>Choose a fish!</option>
-                            <option value="Crappie">Crappie</option>
-                            <option value="Bass">Bass</option>
-                            <option value="Trout">Trout</option>
-                            <option value="Walleye">Walleye</option>
-                            <option value="Striper">Striper</option>
-                            <option value="Muskie">Muskie</option>
-                            <option value="Pike">Pike</option>
-                            <option value="Salmon">Salmon</option>
+                        <select id="this_fish" class="form-select" name="this_fish">
+                        {% for fish in all_fish %}
+                        <option class="select_color" value="{{fish.id}}">{{fish.fish_breed}}</option>
+                        {% endfor %}
                         </select>
-                        <button class="dash">Find lures!</button>
+
+                    
+                    <!-- <div class="form-group">
+                        <label>Please select a lure!</label>
+                        <select id="name" class="form-select" name="name">
+                            {% for lure in all_lures %}
+                            <option class="select_color" value="{{lure.id}}">{{lure.name}}</option>
+                            {% endfor %}
+                            </select>
+                        <div> -->
+                            <button class="dash">Find lures!</button>
+                        </div>
+                    </div>
                     </div>
                 </form>
             </div>

@@ -16,84 +16,46 @@
 <body>
     <div class="container">
         <div style="text-align: right">
-            <button class="dash"><a href="/lure/lure_form">Find your Lure! </a></button>
+            <button class="dash"><a href="/lure/lure_form">Add/Review a Lure</a></button>
+            <button class="dash"><a href="/lure/best_lure_form">Find a Lure! </a></button>
             <button class="dash"><a href="/user/logout_user">Logout</a> </button>
         </div>
-        <h2 style="margin-top:5px">Hello {{current_users.first_name}}!</h2>
+        <h1 style="margin-top:5px">Hello {{current_users.first_name}}!</h1>
         {% if messages %}
         {% for message in messages %}
         <p style="color:red;">{{message}}</p>
         {% endfor %}
         {% endif %}
 
-        <div>
-            <h2 style="margin-top:0px">Here are some recent lure reviews:</h2>
-            <table class="col-md-12" style="margin-top:150px">
-
-                <tr style="font-size: x-large">
-                    <th>Lure</th>
-                    <th>Fish</th>
-                    <th>User</th>
-                    <th>Comment</th>
-                    <th style="text-align: center">Rating</th>
-                    <th style="text-align: center">Actions</th>
-                </tr>
-                <tr>
-                    <th>Five of Diamonds</th>
-                    <th>Trout</th>
-                    <th>Jeremy Ballew</th>
-                    <th>This lure does work well on sunny days!</th>
-                    <th style="text-align: center">5</th>
-                    <th style="text-align: center"><button style="margin-bottom: 5px"><a
-                                href="lure/edit">edit</a></button><button
-                            style="margin-bottom: 5px; margin-left: 10px;"><a href="delete">delete</a></button></th>
-                </tr>
-                <!-- {% for job in every_jobs.all %}
-                {% if job in this_users.everyones_jobs.all %}
-                {% elif job.user_jobs == False %} -->
-                <!-- <tr>
-                    
-                    <td>{{lure.title}}</td>
-                    <td>{{job.location}}</td>
-                    
-                    <td><a href="/job/{{job.id}}/details">View</a></td>
-                    {% if job in current_users.everyones_jobs.all %}
-                    
-                    <td><a href="/job/{{job.id}}/delete">Remove</a></td>
-                    
-                    <td><a href="/job/{{job.id}}/edit">Edit</a></td>
-                    {% endif %}
-                    <td><a href="/job/{{job.id}}/add">Add</a></td>
-                    
-                </tr>
+        <h2>Here are some recent lure reviews:</h2>
+        <table id="dash_table" class="col-md-12">
+            <tr id="border">
+                <th>Lure</th>
+                <th style="padding-right: 5px">Fish</th>
+                <th style="padding-left:5px">User</th>
+                <th style="padding-left: 15px">Comment</th>
+                <th style="text-align: center">Rating</th>
+                <th style="text-align: center">Actions</th>
+            </tr>
+            {% for review in review.all %}
+            <tr id="background">
+                <td>{{review.lure_reviewed.name}}</td>
+                <td>{{review.fish_reviewed.fish_breed}}</td>
+                <td style="padding-left:5px">{{review.user_review.first_name}}</td>
+                <td style="padding-left: 15px">{{review.comment}}</td>
+                <td style="text-align: center">{{review.rating}}</td>
+                {% if review.user_review.id != request.session.current_users %}
+                <td></td>
                 {% endif %}
-                {% endfor %} -->
-
-            </table>
-        </div>
-        <!-- <div style="margin-top:20px" class="col-md-12">
-            <h3>{{current_users.first_name}} jobs</h3>
-            <table class="col-md-12" style="margin-top:30px">
-                <tr>
-                    <th>Job</th>
-                    <th>Actions</th>
-                    
-                </tr>
-                {% for job in current_users.users_jobs.all %}
-                {% if job.user_jobs == True %}
-                <tr>
-                
-                    <td>{{job.title}}</td>
-                    <td><a href="/job/{{job.id}}/details">View</a></td>
-                    <td><a href="/job/{{job.id}}/delete">Done</a></td>
-                    <td><a href="/job/{{job.id}}/remove">Give up</a></td>
-                    
-                </tr> 
+                {% if review.user_review.id == request.session.current_users %}
+                <td style="text-align: center"><button style="margin-bottom: 5px"><a
+                            href="/lure/{{review.id}}/edit_form">edit</a></button>
+                    <button style="margin-bottom: 5px; margin-left: 10px;"><a
+                            href="/review/{{review.id}}/delete">delete</a></button></td>
                 {% endif %}
-                {% endfor %}
-                
-            </table>
-        </div> -->
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 
 </body>

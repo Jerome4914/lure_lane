@@ -38,14 +38,15 @@ def login_user(request):
     return redirect('/')    
 
 def dashboard(request):
+
     if 'current_users' not in request.session:
         return redirect('/')
-    current_users = User.objects.get(id=request.session['current_users'])
+    
     context = {
         'current_users': User.objects.get(id=request.session['current_users']),
-        # 'every_jobs': Job.objects.all(),
-        # "current_user_jobs": Job.objects.filter(all_jobs=current_users.id, user_jobs=True),
-        # "this_user": User.objects.filter(id=request.session['current_users']),
+        'lure': Lure.objects.all(),
+        'review': Review.objects.filter()[:20],
+        'fish': Fish.objects.all(),
     }
     return render(request, 'dashboard.html', context)    
 
@@ -53,30 +54,116 @@ def logout_user(request):
     request.session.clear()
     return redirect('/')
 
+def best_lure_form(request): 
+    if 'current_users' not in request.session:
+        messages.error(request, "Please register or log in first")
+        return redirect('/')
+    context = {
+        'current_users': User.objects.get(id=request.session['current_users']),
+        'all_fish': Fish.objects.filter(id__in=[12, 13, 14, 15, 16, 17, 18, 19]),
+    }
+    return render(request, "best_lure_form.html", context)
+
+# def create_location(request):   
+#     if request.method == "POST":
+#         errors = Fish.objects.fish_validator(request.POST)
+#         if len(errors) > 0:
+#             for key, value in errors.items():
+#                 messages.error(request, value, extra_tags=key)
+#             return redirect('/lure/best_lure_form') 
+        
+#         location = Fish.objects.create(location=request.POST['location'])
+#         user = User.objects.get(id=request.session['current_users'])
+        
+#         return redirect(f'/lure/best_lures/{location.id}')
+#     return redirect('/')
+
+def best_lures(request):
+    errors = Fish.objects.fish_validator(request.POST)
+    if len(errors) > 0:
+        for key, value in errors.items():
+            messages.error(request, value, extra_tags=key)
+        return redirect('/lure/best_lure_form')
+    
+    fish= Fish.objects.get(id=request.POST['this_fish'])
+    context = {
+        'fish': Fish.objects.get(id=request.POST['this_fish']),
+        'current_users': User.objects.get(id=request.session['current_users']),
+        "location":request.POST['location'],
+        "all_lures": Lure.objects.filter(this_fish__fish_breed=fish.fish_breed),
+        
+    }
+    return render(request, "show_lure.html", context)
+
 def lure_form(request):
+    if 'current_users' not in request.session:
+        messages.error(request, "Please register or log in first")
+        return redirect('/')
     context = {
         'current_users': User.objects.get(id=request.session['current_users']),
     }
-    return render(request, "lure_form.html", context)
+    return render(request, "add_lure.html", context)
 
-def create_location(request):
+def create_lure(request):
     if request.method == "POST":
-        errors = Fish.objects.fish_validator(request.POST)
+        lure_errors = Lure.objects.lure_validator(request.POST)
+        fish_errors = Fish.objects.lure_fish_validator(request.POST)
+        review_errors = Review.objects.review_validator(request.POST)
+        errors = list(lure_errors.values())+list(fish_errors.values())+list(review_errors.values())
+        if len(errors) > 0:
+            for error in errors:
+                messages.error(request, error)
+            return redirect('/lure/lure_form')
+        this_fish = Fish.objects.create(fish_breed=request.POST['fish_breed'])
+
+        user = User.objects.get(id=request.session['current_users'])
+        lure = Lure.objects.create(name=request.POST['name'])
+        review = Review.objects.create(comment=request.POST['comment'], rating=int(request.POST['rating']), user_review=user, lure_reviewed=lure, fish_reviewed=this_fish )
+        return redirect('/user/dashboard')
+    return redirect('/')
+
+def delete_review(request, review_id):
+    if 'current_users' not in request.session:
+        messages.error(request, "Please register or log in first!")
+        return redirect('/')
+    review = Review.objects.get(id=review_id)
+    review.delete()
+    return redirect('/user/dashboard')
+
+def lure_edit(request, review_id):
+    
+        
+    if request.method == "POST":
+        review = Review.objects.get(id=review_id)
+        # errors = Review.objects.review_validator(request.POST)
+        # if len(errors) > 0:
+        #     for key, value in errors.items():
+        #         messages.error(request, value, extra_tags=key)
+        #     return redirect(f'/lure/{review.id}/edit_form')      
+        # if request.POST['comment'] == request.POST['comment']:
+        #     if request.POST['rating'] == request.POST['rating']:
+        #         return redirect('/user/dashboard')
+        errors = Review.objects.review_validator(request.POST)
         if len(errors) > 0:
             for key, value in errors.items():
                 messages.error(request, value, extra_tags=key)
-            return redirect('/lure/lure_form')  
-    
-        location = Fish.objects.create(location=request.POST['location'], all_fish = request.POST['all_fish'])
-        user = User.objects.get(id=request.session['current_users'])
-        return redirect(f'/lure/best_lures/{location.id}')
-    return redirect('/')
+            return redirect(f'/lure/{review.id}/edit_form')         
+        review = Review.objects.get(id=review_id)
+        review.comment = request.POST['comment']
+        review.save()
+        review.rating = request.POST['rating']
+        review.save()
+        return redirect('/user/dashboard')
+    return redirect(f'/lure/{review.id}/edit_form') 
 
-def best_lures(request, id):
+def edit_form(request, review_id):
+    if 'current_users' not in request.session:
+        messeges.error(request, "Please register or log in first")
+        return redirect('/')
     
+    review = Review.objects.get(id=review_id)
     context = {
         'current_users': User.objects.get(id=request.session['current_users']),
-        'fish': Fish.objects.get(id=id),
-        'one_fish': Fish.objects.get(id=1)
+        'review': Review.objects.get(id=review_id),
     }
-    return render(request, "show_lure.html", context)
+    return render(request, "one_lure.html", context)
