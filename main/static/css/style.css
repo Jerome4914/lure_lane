@@ -61,10 +61,11 @@ button {
 
 #lure_table{
     margin-top: 0px;
-    width: 100%;
+    width: 102%;
     /* color: rgb(49, 46, 53); */
     font-family: "Trirong", sans-serif;
-    border-collapse:collapse;
+
+    border-bottom: 2px solid rgb(49, 46, 53);
 }
 
 #map {
