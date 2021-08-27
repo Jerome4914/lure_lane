@@ -8,7 +8,6 @@ function initMap() {
                     zoom: 11,
                     center: results[0].geometry.location,
                     gestureHandling: "cooperative",
-                    mapTypeId: 'satellite'
                 });
                 var marker = new google.maps.Marker({
                     map: map,
